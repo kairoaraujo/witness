@@ -1,0 +1,74 @@
+{
+ "signatures": [
+  {
+   "keyid": "1cebe343e35f0213f6136758e6c3a8f8e1f9eeb7e47a07d5cb336462ed31dcb7",
+   "sig": "813d342b834837286c7e809bda69b2f97bdc98019770f4e717e50f16fc388cb9e730fa2cf80f50062c3e366cac4254ec5f668955d44a8f72c8e626746c847e09"
+  },
+  {
+   "keyid": "800dfb5a1982b82b7893e58035e19f414f553fc08cbb1130cfbae302a7b7fee5",
+   "sig": "ffadfb9118768c2e4803379a9b1041685300ce207da14d43da8929a34b642028bd332fbdef48da4e1988b81f96962ca56d3430b17afb4cb70263e951b7defe08"
+  }
+ ],
+ "signed": {
+  "_type": "root",
+  "consistent_snapshot": true,
+  "expires": "2025-03-21T12:06:06Z",
+  "keys": {
+   "1cc018f6c24a42b53892ea8814a52c6887e7cb755ef729c1d2960c12e20efeba": {
+    "keytype": "ecdsa",
+    "keyval": {
+     "public": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAExwF8tVX0CNCGu+C15IdMTUb5nEVb\ni0YcfmZ7dX32mtI0i+dkTv/aAzRxxM/G+ccrZhVV3aPbrCDB6CPs8n0qtQ==\n-----END PUBLIC KEY-----\n"
+    },
+    "scheme": "ecdsa-sha2-nistp256",
+    "x-rstuf-online-key-uri": "awskms:arn:aws:kms:us-east-1:000000000000:alias/aws-kms-keyid-test"
+   },
+   "1cebe343e35f0213f6136758e6c3a8f8e1f9eeb7e47a07d5cb336462ed31dcb7": {
+    "keytype": "ed25519",
+    "keyval": {
+     "public": "ad1709b3cb419b99c5cd7427d6411522e5a93aec6767453e91af921a73d22a3c"
+    },
+    "name": "jj",
+    "scheme": "ed25519"
+   },
+   "800dfb5a1982b82b7893e58035e19f414f553fc08cbb1130cfbae302a7b7fee5": {
+    "keytype": "ed25519",
+    "keyval": {
+     "public": "7098f769f6ab8502b50f3b58686b8a042d5d3bb75d8b3a48a2fcbc15a0223501"
+    },
+    "name": "jh",
+    "scheme": "ed25519"
+   }
+  },
+  "roles": {
+   "root": {
+    "keyids": [
+     "1cebe343e35f0213f6136758e6c3a8f8e1f9eeb7e47a07d5cb336462ed31dcb7",
+     "800dfb5a1982b82b7893e58035e19f414f553fc08cbb1130cfbae302a7b7fee5"
+    ],
+    "threshold": 1
+   },
+   "snapshot": {
+    "keyids": [
+     "1cc018f6c24a42b53892ea8814a52c6887e7cb755ef729c1d2960c12e20efeba"
+    ],
+    "threshold": 1
+   },
+   "targets": {
+    "keyids": [
+     "1cc018f6c24a42b53892ea8814a52c6887e7cb755ef729c1d2960c12e20efeba"
+    ],
+    "threshold": 1
+   },
+   "timestamp": {
+    "keyids": [
+     "1cc018f6c24a42b53892ea8814a52c6887e7cb755ef729c1d2960c12e20efeba"
+    ],
+    "threshold": 1
+   }
+  },
+  "spec_version": "1.0.31",
+  "version": 1,
+  "x-archivista-metadata": "http://localhost:4566/tuf-metadata",
+  "x-archivista-url": "http://localhost:8082"
+ }
+}

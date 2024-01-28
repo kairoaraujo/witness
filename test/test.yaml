@@ -15,7 +15,7 @@
 run:
     signer-file-key-path: testkey.pem
     step: build
-    trace: true
+    trace: false
     attestations:
         - environment
         - git

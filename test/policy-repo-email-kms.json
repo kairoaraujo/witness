@@ -1,0 +1,72 @@
+{
+  "expires": "2030-12-17T23:57:40-05:00",
+  "name": "demo-package_repo-and-author",
+  "steps": {
+    "build": {
+      "name": "build",
+      "attestations": [
+        {
+          "type": "https://witness.dev/attestations/environment/v0.1"
+        },
+        {
+          "type": "https://witness.dev/attestations/git/v0.1",
+          "subjectscopes": [
+            {
+              "subject": "authoremail",
+              "scope": "kairo.araujo@testifysec.com"
+            },
+            {
+              "subject": "commiteremail",
+              "scope": "kairo.araujo@testifysec.com"
+            }
+          ]
+        },
+        {
+          "type": "https://witness.dev/attestations/github/v0.1",
+          "subjectscopes": [
+            {
+              "subject": "projecturl",
+              "scope": "kairoaraujo/demo-package"
+            }
+          ],
+          "regopolicies": [
+            {
+              "name": "GitHub Repository",
+              "module": "cGFja2FnZSBnaXRodWIKCmRlbnlbbXNnXSB7CiAgICBpbnB1dC5wcm9qZWN0dXJsICE9ICJodHRwczovL2dpdGh1Yi5jb20va2Fpcm9hcmF1am8vZGVtby1wYWNrYWdlIgogICAgbXNnIDo9ICJwcm9qZWN0dXJsIGlzIG5vdCAnaHR0cHM6Ly9naXRodWIuY29tL2thaXJvYXJhdWpvL2RlbW8tcGFja2FnZSciCn0="
+            }
+          ]
+        },
+        {
+          "type": "https://witness.dev/attestations/material/v0.1"
+        },
+        {
+          "type": "https://witness.dev/attestations/command-run/v0.1",
+          "regopolicies": [
+            {
+              "name": "expected command",
+              "module": "cGFja2FnZSBjb21tYW5kcnVuCgpkZW55W21zZ10gewogICAgaW5wdXQuY21kICE9IFsicHl0aG9uMyIsICItbSIsICJidWlsZCIsICItLXNkaXN0IiwgIi0td2hlZWwiLCAiLS1vdXRkaXIiLCAiZGlzdC8iLCAiLiJdCiAgICBtc2cgOj0gImJ1aWxkIGNvbW1hbmQgZG9lc24ndCBtYXRjaCIKfQo="
+            },
+            {
+              "name": "expected exit code",
+              "module": "cGFja2FnZSBjb21tYW5kcnVuCgpkZW55W21zZ10gewogICAgaW5wdXQuZXhpdGNvZGUgIT0gMAogICAgbXNnIDo9ICJleGl0Y29kZSBub3QgMCIKfQo="
+            }
+          ]
+        },
+        {
+          "type": "https://witness.dev/attestations/product/v0.1"
+        }
+      ],
+      "functionaries": [
+        {
+          "type": "publickey",
+          "publickeyid": "awskms:///arn:aws:kms:us-east-1:000000000000:alias/aws-kms-keyid-test"
+        }
+      ]
+    }
+  },
+  "publickeys": {
+    "awskms:///arn:aws:kms:us-east-1:000000000000:alias/aws-kms-keyid-test": {
+      "keyid": "awskms:///arn:aws:kms:us-east-1:000000000000:alias/aws-kms-keyid-test"
+    }
+  }
+}
