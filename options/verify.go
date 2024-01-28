@@ -24,6 +24,7 @@ type VerifyOptions struct {
 	ArtifactFilePath     string
 	AdditionalSubjects   []string
 	CAPaths              []string
+	TUFRoot              string
 }
 
 func (vo *VerifyOptions) AddFlags(cmd *cobra.Command) {
@@ -34,5 +35,5 @@ func (vo *VerifyOptions) AddFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVarP(&vo.ArtifactFilePath, "artifactfile", "f", "", "Path to the artifact to verify")
 	cmd.Flags().StringSliceVarP(&vo.AdditionalSubjects, "subjects", "s", []string{}, "Additional subjects to lookup attestations")
 	cmd.Flags().StringSliceVarP(&vo.CAPaths, "policy-ca", "", []string{}, "Paths to CA certificates to use for verifying the policy")
-
+	cmd.Flags().StringVarP(&vo.TUFRoot, "tuf-root", "", "", "Path to the TUF root.json file")
 }

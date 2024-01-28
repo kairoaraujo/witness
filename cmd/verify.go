@@ -20,7 +20,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
+	"path"
+	"strings"
 
 	witness "github.com/in-toto/go-witness"
 	"github.com/in-toto/go-witness/archivista"
@@ -29,6 +32,8 @@ import (
 	"github.com/in-toto/go-witness/log"
 	"github.com/in-toto/go-witness/source"
 	"github.com/in-toto/witness/options"
+	"github.com/in-toto/witness/tuf"
+	"github.com/rdimitrov/go-tuf-metadata/metadata"
 	"github.com/spf13/cobra"
 )
 
@@ -56,7 +61,57 @@ const (
 // todo: this logic should be broken out and moved to pkg/
 // we need to abstract where keys are coming from, etc
 func runVerify(ctx context.Context, vo options.VerifyOptions) error {
-	if vo.KeyPath == "" && len(vo.CAPaths) == 0 {
+	var localFile string
+	var archivistaUrl string
+	var metadataUrl string
+	var policyPubKey string
+	if strings.HasPrefix(vo.PolicyFilePath, "tuf:") {
+
+		tufRootFile, err := os.ReadFile(vo.TUFRoot)
+		if err != nil {
+			return fmt.Errorf("failed to open tuf root file: %w", err)
+		}
+
+		tufRootMetadata, err := metadata.Root().FromBytes(tufRootFile)
+
+		if len(tufRootMetadata.Signed.UnrecognizedFields) != 0 {
+			archivistaUrl = tufRootMetadata.Signed.UnrecognizedFields["x-archivista-url"].(string)
+			policyPubKey = tufRootMetadata.Signed.UnrecognizedFields["x-archivista-policy-pubkey"].(string)
+			metadataUrl = tufRootMetadata.Signed.UnrecognizedFields["x-archivista-metadata"].(string)
+		}
+
+		if err != nil {
+			return fmt.Errorf("failed to parse tuf root file: %w", err)
+		}
+
+		if archivistaUrl == "" {
+			archivistaUrl = vo.ArchivistaOptions.Url
+		}
+
+		if vo.TUFRoot == "" {
+			return fmt.Errorf("must supply tuf root")
+		}
+		targetsURL, _ := url.JoinPath(archivistaUrl, "/v1/download")
+
+		// Download the target file using Updater. The Updater refreshes the top-level metadata,
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return fmt.Errorf("failed to get user home dir: %w", err)
+		}
+		localMetadataDir := path.Join(homeDir, ".witness", "tuf", "metadata")
+		os.MkdirAll(localMetadataDir, 0755)
+		localFile = strings.Split(vo.PolicyFilePath, ":")[1]
+
+		err = tuf.DownloadTarget(localMetadataDir, localFile, metadataUrl, targetsURL, "", tufRootFile, false)
+		if err != nil {
+			return fmt.Errorf("failed to download target: %w", err)
+		}
+
+	} else {
+		localFile = vo.PolicyFilePath
+	}
+
+	if vo.KeyPath == "" && policyPubKey == "" && len(vo.CAPaths) == 0 {
 		return fmt.Errorf("must suply public key or ca paths")
 	}
 
@@ -72,10 +127,15 @@ func runVerify(ctx context.Context, vo options.VerifyOptions) error {
 		if err != nil {
 			return fmt.Errorf("failed to create verifier: %w", err)
 		}
-
+	} else {
+		var err error
+		verifier, err = cryptoutil.NewVerifierFromReader(strings.NewReader(policyPubKey))
+		if err != nil {
+			return fmt.Errorf("failed to create verifier: %w", err)
+		}
 	}
 
-	inFile, err := os.Open(vo.PolicyFilePath)
+	inFile, err := os.Open(localFile)
 	if err != nil {
 		return fmt.Errorf("failed to open file to sign: %w", err)
 	}
